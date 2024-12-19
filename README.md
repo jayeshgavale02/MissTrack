@@ -1,7 +1,7 @@
 # 📁 **MissTrack: Missing Persons Tracking System**
 
 ## 📝 **Overview**
-**TrackP** is an advanced AI-driven project designed to tackle the growing issue of missing persons globally. It leverages cutting-edge machine learning algorithms and computer vision techniques to analyze video surveillance footage and image datasets for precise facial recognition. The system performs geospatial analysis to narrow down search areas, providing law enforcement agencies with real-time alerts and geolocation data.
+**MissTrack** is an advanced AI-driven project designed to tackle the growing issue of missing persons globally. It leverages cutting-edge machine learning algorithms and computer vision techniques to analyze video surveillance footage and image datasets for precise facial recognition. The system performs geospatial analysis to narrow down search areas, providing law enforcement agencies with real-time alerts and geolocation data.
 
 ---
 
@@ -48,21 +48,29 @@
 - **MongoDB**: Database for storing user and case data.
 - **Geospatial Analysis**: Tools for analyzing location data and identifying search areas.
 - **Flask**: Web framework for handling requests and serving the model's predictions.
-- **Socket.IO**: For real-time notifications to law enforcement agencies.
-
+- **MySQL**: For storing case-related data and tracking progress.
+  
 ---
 
 ## ⚙️ **Installation & Setup**
 
 ### **Prerequisites**
 - **Python**: Version 3.8 or later.
-- **MongoDB**: Local or hosted instance.
+- **MongoDB**: Local or hosted instance for storing user and case data.
 - **OpenCV**: For image and video processing.
-- **TensorFlow/Keras**: For AI and machine learning model training.
+- **TensorFlow/Keras**: For training AI and machine learning models.
+- **MySQL**: For storing case details and other related data.
 - **Node.js** (optional for real-time notifications).
 
 ### **Instructions**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/TrackP.git
-   cd TrackP
+   git clone https://github.com/yourusername/MissTrack.git
+   cd MissTrack
+2.Set up the environment:
+  Install Python dependencies:
+  ```bash
+   pip install -r requirements.txt
+3.Start the Flask server:
+  ```bash
+  python app.py

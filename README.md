@@ -65,12 +65,10 @@
 ### **Instructions**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/MissTrack.git
+   git clone https://github.com/jayeshgavale02/MissTrack.git
    cd MissTrack
 2.Set up the environment:
   Install Python dependencies:
   ```bash
    pip install -r requirements.txt
-3.Start the Flask server:
-  ```bash
-  python app.py
+   python app.py

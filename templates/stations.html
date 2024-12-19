@@ -1,0 +1,160 @@
+<!-- stations.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="page-title">Add Stations</h4>
+    <div class="row-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Station Details Form</div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="alert-container m-2">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+            </div>
+
+            <div class="card-body">
+                <!-- Form to submit station details -->
+                <form action="{{ url_for('stations') }}" method="POST">
+                    <div class="row">
+                        <!-- Station Name -->
+                        <div class="col-md-6 form-group">
+                            <label for="stationName">Station Name</label>
+                            <input type="text" class="form-control" id="stationName" placeholder="Enter station name" name="station_name" required>
+                        </div>
+                        <!-- Station Email -->
+                        <div class="col-md-6 form-group">
+                            <label for="stationEmail">Station Email</label>
+                            <input type="email" class="form-control" id="stationEmail" placeholder="Enter station email" name="station_email" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Password -->
+                        <div class="col-md-6 form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+                        </div>
+                        <!-- Station Mobile No -->
+                        <div class="col-md-6 form-group">
+                            <label for="stationMobileNo">Station Mobile No</label>
+                            <input type="text" class="form-control" id="stationMobileNo" placeholder="Enter mobile number" name="station_mobile_no" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Longitude -->
+                        <div class="col-md-6 form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" placeholder="Enter longitude" name="longitude" required>
+                        </div>
+                        <!-- Latitude -->
+                        <div class="col-md-6 form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" placeholder="Enter latitude" name="latitude" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- State -->
+                        <div class="col-md-6 form-group">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" id="state" placeholder="Enter state" name="state" required>
+                        </div>
+                        <!-- District -->
+                        <div class="col-md-6 form-group">
+                            <label for="district">District</label>
+                            <input type="text" class="form-control" id="district" placeholder="Enter district" name="district" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Division -->
+                        <div class="col-md-6 form-group">
+                            <label for="division">Division</label>
+                            <input type="text" class="form-control" id="division" placeholder="Enter division" name="division" required>
+                        </div>
+                        <!-- City -->
+                        <div class="col-md-6 form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" placeholder="Enter city" name="city" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Date -->
+                        <div class="col-md-12 form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="card-action">
+                        <button type="submit" class="btn btn-success w-100">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<div class="row-12 mt-4">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">All Stations</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                                                <th>Sr.No</th>
+
+                        <th>Station Name</th>
+                        <th>Email</th>
+                        <th>Mobile No</th>
+                        <th>Longitude</th>
+                        <th>Latitude</th>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Division</th>
+                        <th>City</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+               <tbody>
+    {% for station in stations %}
+    <tr>
+        <td>{{ loop.index }}</td> <!-- Display the serial number -->
+        <td>{{ station.station_name }}</td>
+        <td>{{ station.station_email }}</td>
+        <td>{{ station.station_mobile_no }}</td>
+        <td>{{ station.longitude }}</td>
+        <td>{{ station.latitude }}</td>
+        <td>{{ station.state }}</td>
+        <td>{{ station.district }}</td>
+        <td>{{ station.division }}</td>
+        <td>{{ station.city }}</td>
+        <td>{{ station.date }}</td>
+        <td>
+            <!-- Edit and Delete buttons -->
+<a href="{{ url_for('update_station', station_id=station.id) }}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="#" class="btn btn-danger btn-sm" onclick="deleteStation({{ station.id }}); return false;">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

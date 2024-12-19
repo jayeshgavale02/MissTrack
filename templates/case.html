@@ -1,0 +1,143 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="page-title">Add Case</h4>
+  <div class="row-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Missing Person Form</div>
+
+        </div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container m-2">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+        <div class="card-body">
+            <!-- Form to submit missing person details -->
+            <form action="{{ url_for('case') }}" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="birthdate">Birthdate</label>
+                        <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="missingdate">Missing Date</label>
+                        <input type="date" class="form-control" id="missingdate" name="missingdate" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="complaintdate">Complaint Date</label>
+                        <input type="date" class="form-control" id="complaintdate" name="complaintdate" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="criminal">Criminal (Yes/No)</label>
+                        <select class="form-control" id="criminal" name="criminal" required>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="aadharCardNo">Aadhar Card Number</label>
+                        <input type="text" class="form-control" id="aadharCardNo" name="aadharCardNo" placeholder="Enter Aadhar card number" required>
+                    </div>
+                <div class="col-md-6 form-group">
+                        <!-- Demo image (will be shown until the user uploads an image) -->
+    <div id="image-preview" class="d-flex gap-2 p-3">
+        <img id="preview-img" src="https://as2.ftcdn.net/jpg/05/30/01/09/1000_F_530010960_WkmW6q8FIZ42LkEQoSRCLTNTw0WgJqKY.jpg" alt="Demo Image" width="200px" />
+    <p class="text-danger ml-2"> * Note: Please ensure to select a clear and well-lit face image for optimal results, as demonstrated in the image above. The clarity of the image is crucial for accurate processing and recognition.</p>
+
+    </div>
+    <label for="photo">Photo</label>
+    <input type="file" class="form-control" id="photo" name="photo" required onchange="uploadImage(event)">
+
+
+</div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="card-action">
+                    <button type="submit" class="btn btn-success w-100">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row-12 mt-4">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">All Missing Persons</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name</th>
+                        <th>Birthdate</th>
+                        <th>Address</th>
+                        <th>Missing Date</th>
+                        <th>Complaint Date</th>
+                        <th>Criminal</th>
+                        <th>Aadhar Card No</th>
+                        <th>Photo</th>
+                        <th>Actions</th> <!-- New column for action buttons -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person in missing_persons %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.birthdate }}</td>
+                        <td>{{ person.address }}</td>
+                        <td>{{ person.missingdate }}</td>
+                        <td>{{ person.complaintdate }}</td>
+                        <td>{{ person.criminal }}</td>
+                        <td>{{ person.aadharCardNo }}</td>
+                        <td>
+                            <a href="{{ person.photo }}" target="_blank">
+                                <img src="{{ person.photo }}" alt="Photo" width="50">
+                            </a>
+                        </td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a href="{{ url_for('update_missing_person', person_id=person.id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                            <!-- Delete Button -->
+<a href="#" class="btn btn-danger btn-sm" onclick="deleteRecord({{ person.id }}); return false;">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

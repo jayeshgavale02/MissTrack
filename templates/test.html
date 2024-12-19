@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .notification-container {
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .notification-message {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .notification-message:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Notifications</h1>
+
+    <script>
+        // Function to play the notification sound
+        function playNotificationSound() {
+            const audio = new Audio("../static/assets/notification-sound.mp3"); // Ensure this path is correct
+            audio.play().catch((error) => {
+                console.error("Error playing sound:", error);
+            });
+        }
+
+        // Enable sound notifications after any user interaction
+        function enableNotifications() {
+            // Remove the listener after the first interaction
+            document.body.removeEventListener('click', enableNotifications);
+            document.body.removeEventListener('keydown', enableNotifications);
+            document.body.removeEventListener('mousemove', enableNotifications);
+
+            console.log("Notifications enabled!");
+
+            // Simulate fetching notifications and playing a sound
+            setInterval(() => {
+                console.log("New notification received!");
+                playNotificationSound();
+            }, 10000); // Fetch notifications every 10 seconds
+        }
+
+        // Attach event listeners for user interaction
+        document.body.addEventListener('click', enableNotifications);
+        document.body.addEventListener('keydown', enableNotifications);
+        document.body.addEventListener('mousemove', enableNotifications);
+    </script>
+</body>
+</html>

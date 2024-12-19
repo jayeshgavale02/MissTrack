@@ -1,0 +1,173 @@
+{% extends 'index.html' %} {% block content %}
+<div class="container-fluid" id="content">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Find Missing Person</div>
+    </div>
+    <div class="card-body px-4">
+      <!-- Form for uploading a photo -->
+
+      <form id="findMissingPersonForm" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label for="photo">Upload a photo to find a match</label>
+            <input
+              type="file"
+              class="form-control"
+              id="photo"
+              name="photo"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+      <!-- Alert for match found or error -->
+      <div id="alertContainer" class="mt-4" style="background: #565482f8;"></div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen Loader -->
+<div id="loader" class="loader-overlay d-none">
+  <div class="loader-content">
+    <!-- Spinner -->
+    <div class="spinner-border text-primary mb-3" role="status">
+      <span class="text-white mt-3">Loading...</span>
+    </div>
+    <!-- SVG -->
+    <div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="100"
+        height="100"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-search"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <p class="text-white mt-3">Finding the match, please wait...</p>
+  </div>
+</div>
+
+<style>
+  /* Fullscreen overlay loader styles */
+  .loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .loader-content {
+    text-align: center;
+  }
+  .blur {
+    filter: blur(5px);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  document
+    .getElementById("findMissingPersonForm")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault(); // Prevent form submission
+
+      const loader = document.getElementById("loader");
+      const content = document.getElementById("content");
+      const formData = new FormData();
+      const photoInput = document.getElementById("photo");
+
+      // Ensure a photo is selected
+      if (photoInput.files.length === 0) {
+        displayAlert("danger", "Please upload a photo!");
+        return;
+      }
+
+      formData.append("photo", photoInput.files[0]);
+
+      // Show loader and blur background
+      loader.classList.remove("d-none");
+      content.classList.add("blur");
+
+      try {
+        const response = await fetch("/find-missing-person", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.match) {
+          displayAlert(
+            "success",
+            `
+            <div class="row ">
+              <div class="col-3">
+                <img src="${result.details.photo}" class="my-auto" alt="Matched Photo" style="width: 200px;">
+              </div>
+              <div class="col-9">
+                <h5 class="text-success fw-bold">Match Found!</h5>
+                <p><strong>Name:</strong> ${result.details.name}</p>
+                <p><strong>Confidence:</strong> ${(result.details.confidence * 100).toFixed(2)}%</p>
+                <p><strong>Address:</strong> ${result.details.address}</p>
+                <p><strong>Birthdate:</strong> ${result.details.birthdate}</p>
+                <p><strong>Missing date:</strong> ${result.details.missingdate}</p>
+                <p><strong>Complaint date:</strong> ${result.details.complaintdate}</p>
+                <p><strong>Criminal:</strong> ${result.details.criminal}</p>
+                <p><strong>Aadhar Card No:</strong> ${result.details.aadharCardNo}</p>
+                <p><strong>Status:</strong> ${result.details.status}</p>
+              </div>
+            </div>
+            `
+          );
+        } else if (!response.ok) {
+          displayAlert(
+            "danger",
+            result.error || "An error occurred while processing your request."
+          );
+        } else {
+          displayAlert("warning", result.message || "No match found.");
+        }
+      } catch (error) {
+        displayAlert(
+          "danger",
+          `An unexpected error occurred: ${error.message}`
+        );
+      } finally {
+        // Hide loader and remove blur effect
+        loader.classList.add("d-none");
+        content.classList.remove("blur");
+      }
+    });
+
+  /**
+   * Function to display alert messages dynamically.
+   * @param {string} type - The type of alert (success, danger, warning).
+   * @param {string} message - The alert message or HTML content.
+   */
+  function displayAlert(type, message) {
+    const alertContainer = document.getElementById("alertContainer");
+    alertContainer.innerHTML = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+        </div>
+    `;
+  }
+</script>
+{% endblock %}

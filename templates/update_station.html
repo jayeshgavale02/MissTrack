@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="page-title">Update Station Details</h4>
+    <div class="row-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Update Station Form</div>
+            </div>
+            <div class="card-body">
+                <!-- Update Form for Station Details -->
+                <form action="{{ url_for('update_station', station_id=station[0]) }}" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="station_name">Station Name</label>
+                            <input type="text" class="form-control" name="station_name" value="{{ station[1] }}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="station_email">Station Email</label>
+                            <input type="email" class="form-control" readonly name="station_email" value="{{ station[2] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="password">Password</label>
+                            <input type="password" readonly class="form-control" name="password" value="{{ station[3] }}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="station_mobile_no">Mobile No</label>
+                            <input type="text" class="form-control" name="station_mobile_no" value="{{ station[4] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" class="form-control" name="longitude" value="{{ station[5] }}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="text" class="form-control" name="latitude" value="{{ station[6] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" name="state" value="{{ station[7] }}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="district">District</label>
+                            <input type="text" class="form-control" name="district" value="{{ station[8] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="division">Division</label>
+                            <input type="text" class="form-control" name="division" value="{{ station[9] }}" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" name="city" value="{{ station[10] }}" required>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="card-action">
+                        <button type="submit" class="btn btn-success w-100">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

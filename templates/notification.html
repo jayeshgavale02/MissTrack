@@ -1,0 +1,85 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h4 class="page-title">Notifications</h4>
+    <div class="row-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">All Notifications</div>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container m-2">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Camera Address</th>
+                            <th>Missing Person Name</th>
+                            <th>Birthdate</th>
+                            <th>Address</th>
+                            <th>Missing Date</th>
+                            <th>Complaint Date</th>
+                            <th>Criminal</th>
+                            <th>Aadhar Card No</th>
+                            <th>Photo</th>
+                            <th>Notification Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ notification.camera_address }}</td>
+                                <td>{{ notification.missing_person_name }}</td>
+                                <td>{{ notification.missing_person_birthdate }}</td>
+                                <td>{{ notification.missing_person_address }}</td>
+                                <td>{{ notification.missing_date }}</td>
+                                <td>{{ notification.complaint_date }}</td>
+                                <td>{{ notification.is_criminal }}</td>
+                                <td>{{ notification.aadhar_card_no }}</td>
+                                <td>
+                                    <a href="{{ notification.missing_person_photo }}" target="_blank">
+                                        <img src="{{ notification.missing_person_photo }}" alt="Photo" width="50">
+                                    </a>
+                                </td>
+<td>
+    <!-- Check if the notification status is 'seen' or 'unseen' -->
+    {% if notification.notification_status == 'seen' %}
+        <!-- If status is 'seen', show 'Unseen' button -->
+        <a href="javascript:void(0);" class="btn btn-warning update-status" data-notification-id="{{ notification.notification_id }}" data-status="unseen">
+            Unseen
+        </a>
+    {% else %}
+        <!-- If status is 'unseen', show 'Seen' button -->
+        <a href="javascript:void(0);" class="btn btn-success update-status" data-notification-id="{{ notification.notification_id }}" data-status="seen">
+            Seen
+        </a>
+    {% endif %}
+</td>
+
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center">No notifications available</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
